@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-const menuConfig = {
+export const menuConfig = {
   admin: [
     { label: 'Dashboard', href: '/dashboard', icon: '📊' },
     { label: 'Sales Overview', href: '/dashboard/sales', icon: '📈' },
@@ -14,42 +14,37 @@ const menuConfig = {
     { label: 'Manufacturing', href: '/dashboard/manufacturing', icon: '🏭' },
     { label: 'Procurement', href: '/dashboard/purchase', icon: '💼' },
     { label: 'Analytics', href: '/dashboard/analytics', icon: '📉' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
+    { label: 'User Management', href: '/dashboard/users', icon: '👥' },
   ],
   sales: [
     { label: 'Dashboard', href: '/dashboard', icon: '📊' },
     { label: 'Leads', href: '/dashboard/leads', icon: '👥' },
     { label: 'Orders', href: '/dashboard/orders', icon: '📋' },
     { label: 'Customers', href: '/dashboard/customers', icon: '🎯' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
   ],
   purchase: [
     { label: 'Dashboard', href: '/dashboard', icon: '📊' },
     { label: 'Suppliers', href: '/dashboard/suppliers', icon: '🏢' },
     { label: 'POs', href: '/dashboard/purchase-orders', icon: '📄' },
     { label: 'Inventory', href: '/dashboard/inventory', icon: '📦' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
   ],
   manufacturing: [
     { label: 'Dashboard', href: '/dashboard', icon: '📊' },
     { label: 'Production', href: '/dashboard/production', icon: '⚙️' },
     { label: 'Quality', href: '/dashboard/quality', icon: '✅' },
     { label: 'Equipment', href: '/dashboard/equipment', icon: '🔧' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
   ],
   inventory: [
     { label: 'Dashboard', href: '/dashboard', icon: '📊' },
     { label: 'Stock Levels', href: '/dashboard/stock', icon: '📦' },
     { label: 'Warehouses', href: '/dashboard/warehouses', icon: '🏗️' },
     { label: 'Movements', href: '/dashboard/movements', icon: '↔️' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
   ],
   business_owner: [
     { label: 'Executive Dashboard', href: '/dashboard', icon: '👑' },
     { label: 'Business Health', href: '/dashboard/health', icon: '💚' },
     { label: 'Reports', href: '/dashboard/reports', icon: '📊' },
     { label: 'Performance', href: '/dashboard/performance', icon: '⚡' },
-    { label: 'AI Assistant', href: '/dashboard/ai', icon: '🤖' },
   ],
 }
 
@@ -109,16 +104,23 @@ export default function Sidebar() {
 
       {/* User Section */}
       <div className="p-4 border-t border-border/50 space-y-3">
-        <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-          <div className="text-2xl">{user.avatar}</div>
-          <div className="text-right text-xs">
-            <p className="font-semibold text-foreground">{user.name}</p>
-            <p className="text-muted-foreground">{user.department}</p>
+        <div className="p-3.5 bg-muted/50 border border-border/40 rounded-xl space-y-2">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl shrink-0">{user.avatar}</div>
+            <div className="text-left text-xs min-w-0">
+              <p className="font-extrabold text-foreground truncate">{user.name}</p>
+              <p className="text-[10px] text-primary font-black uppercase tracking-wider">
+                {user.role === 'business_owner' ? 'Owner' : user.role}
+              </p>
+            </div>
+          </div>
+          <div className="text-[10px] text-muted-foreground border-t border-border/40 pt-1.5 truncate font-medium" title={user.email}>
+            {user.email}
           </div>
         </div>
         <Button
           onClick={handleLogout}
-          className="w-full bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+          className="w-full bg-destructive/10 border border-destructive/30 hover:bg-destructive hover:text-destructive-foreground text-destructive font-bold text-xs uppercase tracking-wider py-2.5 rounded-xl cursor-pointer transition-all"
         >
           Logout
         </Button>

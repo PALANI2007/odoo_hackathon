@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { supabase } from './supabase'
 
 export type UserRole = 'admin' | 'sales' | 'purchase' | 'manufacturing' | 'inventory' | 'business_owner'
 
@@ -22,73 +23,23 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Demo users for the system
-const DEMO_USERS: Record<string, { password: string; user: User }> = {
-  admin: {
-    password: 'admin123',
-    user: {
-      id: '1',
-      name: 'Sarah Chen',
-      email: 'admin@erp.com',
-      role: 'admin',
-      department: 'Administration',
-      avatar: '👩‍💼'
-    }
-  },
-  sales: {
-    password: 'sales123',
-    user: {
-      id: '2',
-      name: 'Marcus Johnson',
-      email: 'sales@erp.com',
-      role: 'sales',
-      department: 'Sales',
-      avatar: '👨‍💻'
-    }
-  },
-  purchase: {
-    password: 'purchase123',
-    user: {
-      id: '3',
-      name: 'Priya Patel',
-      email: 'purchase@erp.com',
-      role: 'purchase',
-      department: 'Procurement',
-      avatar: '👩‍🔬'
-    }
-  },
-  manufacturing: {
-    password: 'manufacturing123',
-    user: {
-      id: '4',
-      name: 'David Kim',
-      email: 'manufacturing@erp.com',
-      role: 'manufacturing',
-      department: 'Operations',
-      avatar: '👨‍🏭'
-    }
-  },
-  inventory: {
-    password: 'inventory123',
-    user: {
-      id: '5',
-      name: 'Elena Rodriguez',
-      email: 'inventory@erp.com',
-      role: 'inventory',
-      department: 'Warehouse',
-      avatar: '👩‍🎓'
-    }
-  },
-  business_owner: {
-    password: 'owner123',
-    user: {
-      id: '6',
-      name: 'James Wilson',
-      email: 'owner@erp.com',
-      role: 'business_owner',
-      department: 'Executive',
-      avatar: '👨‍💼'
-    }
+const getRoleDetails = (role: string) => {
+  switch (role) {
+    case 'admin':
+      return { department: 'Administration', avatar: '👩‍💼' }
+    case 'sales':
+      return { department: 'Sales', avatar: '👨‍💻' }
+    case 'purchase':
+      return { department: 'Procurement', avatar: '👩‍🔬' }
+    case 'manufacturing':
+      return { department: 'Operations', avatar: '👨‍🏭' }
+    case 'inventory':
+      return { department: 'Warehouse', avatar: '👩‍🎓' }
+    case 'owner':
+    case 'business_owner':
+      return { department: 'Executive', avatar: '👨‍💼' }
+    default:
+      return { department: 'General Operations', avatar: '👤' }
   }
 }
 
@@ -111,21 +62,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     setIsLoading(true)
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 800))
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .eq('password', password)
 
-    // Find user by email
-    const userEntry = Object.values(DEMO_USERS).find(
-      entry => entry.user.email === email && entry.password === password
-    )
+      if (error) {
+        throw new Error(error.message)
+      }
 
-    if (!userEntry) {
-      throw new Error('Invalid email or password')
+      if (!data || data.length === 0) {
+        throw new Error('Invalid email or password')
+      }
+
+      const dbUser = data[0]
+
+      if (dbUser.role && dbUser.role.startsWith('deactivated_')) {
+        throw new Error('Account deactivated. Contact administrator.')
+      }
+
+      // Map DB role 'owner' to frontend role 'business_owner'
+      const mappedRole: UserRole = dbUser.role === 'owner' ? 'business_owner' : dbUser.role
+
+      const { department, avatar } = getRoleDetails(dbUser.role)
+
+      const currentUser: User = {
+        id: dbUser.id,
+        name: dbUser.name,
+        email: dbUser.email,
+        role: mappedRole,
+        department,
+        avatar
+      }
+
+      setUser(currentUser)
+      localStorage.setItem('erp_user', JSON.stringify(currentUser))
+    } catch (err) {
+      console.error('Login failed:', err)
+      throw err
+    } finally {
+      setIsLoading(false)
     }
-
-    setUser(userEntry.user)
-    localStorage.setItem('erp_user', JSON.stringify(userEntry.user))
-    setIsLoading(false)
   }
 
   const logout = () => {

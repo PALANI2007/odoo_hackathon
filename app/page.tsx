@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -28,20 +29,6 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const demoUsers = [
-    { email: 'admin@erp.com', password: 'admin123', role: 'Admin' },
-    { email: 'sales@erp.com', password: 'sales123', role: 'Sales' },
-    { email: 'purchase@erp.com', password: 'purchase123', role: 'Procurement' },
-    { email: 'manufacturing@erp.com', password: 'manufacturing123', role: 'Operations' },
-    { email: 'inventory@erp.com', password: 'inventory123', role: 'Warehouse' },
-    { email: 'owner@erp.com', password: 'owner123', role: 'Executive' },
-  ]
-
-  const fillDemo = (demoEmail: string, demoPassword: string) => {
-    setEmail(demoEmail)
-    setPassword(demoPassword)
   }
 
   const containerVariants = {
@@ -94,7 +81,7 @@ export default function LoginPage() {
         <motion.div className="text-center mb-8" variants={itemVariants}>
           <div className="text-5xl mb-4">🚀</div>
           <h1 className="text-4xl font-bold text-foreground mb-2">ERP Nexus AI</h1>
-          <p className="text-muted-foreground text-sm">Enterprise Resource Planning</p>
+          <p className="text-muted-foreground text-sm">Enterprise Resource Planning Command Core</p>
         </motion.div>
 
         {/* Login Form */}
@@ -111,6 +98,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
+                required
                 className="w-full bg-background/50 border-border/50 text-foreground placeholder-muted-foreground focus:bg-background"
               />
             </div>
@@ -123,6 +111,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}
+                required
                 className="w-full bg-background/50 border-border/50 text-foreground placeholder-muted-foreground focus:bg-background"
               />
             </div>
@@ -140,35 +129,23 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-11 transition-all"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-11 transition-all cursor-pointer"
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-        </motion.div>
 
-        {/* Demo Users */}
-        <motion.div className="mt-8" variants={itemVariants}>
-          <p className="text-sm text-muted-foreground text-center mb-4">Demo Users:</p>
-          <div className="grid grid-cols-2 gap-3">
-            {demoUsers.map((user, i) => (
-              <motion.button
-                key={i}
-                onClick={() => fillDemo(user.email, user.password)}
-                className="p-3 bg-card/50 border border-border/50 rounded-lg hover:bg-card hover:border-primary/50 transition-all text-left"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className="text-xs font-semibold text-secondary">{user.role}</div>
-                <div className="text-xs text-muted-foreground truncate">{user.email}</div>
-              </motion.button>
-            ))}
+          <div className="mt-6 pt-6 border-t border-white/[0.06] text-center text-xs">
+            <span className="text-slate-400 mr-1.5">Don't have an account?</span>
+            <Link href="/register" className="text-purple-400 hover:text-purple-300 font-extrabold transition-all uppercase tracking-wider hover:underline">
+              Create Account
+            </Link>
           </div>
         </motion.div>
 
         {/* Footer */}
         <motion.p className="text-center text-xs text-muted-foreground mt-8" variants={itemVariants}>
-          AI-Powered Enterprise Resource Planning System
+          AI-Powered Enterprise Resource Planning System Connected to Supabase
         </motion.p>
       </motion.div>
     </div>
