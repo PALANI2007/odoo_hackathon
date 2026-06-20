@@ -46,19 +46,19 @@ export const activityLog = [
 
 export const kpiTargets = {
   admin: {
-    revenue: { current: 283000, target: 250000, unit: '$' },
+    revenue: { current: 283000, target: 250000, unit: '₹' },
     orders: { current: 603, target: 500, unit: '' },
     efficiency: { current: 94.2, target: 90, unit: '%' },
     satisfaction: { current: 4.6, target: 4.5, unit: '/5' }
   },
   sales: {
-    revenue: { current: 283000, target: 250000, unit: '$' },
+    revenue: { current: 283000, target: 250000, unit: '₹' },
     activeDeals: { current: 24, target: 20, unit: '' },
     conversionRate: { current: 32.5, target: 30, unit: '%' },
-    avgDealSize: { current: 18500, target: 15000, unit: '$' }
+    avgDealSize: { current: 18500, target: 15000, unit: '₹' }
   },
   purchase: {
-    costSavings: { current: 45000, target: 40000, unit: '$' },
+    costSavings: { current: 45000, target: 40000, unit: '₹' },
     onTimeDelivery: { current: 96.2, target: 95, unit: '%' },
     supplierQuality: { current: 4.6, target: 4.5, unit: '/5' },
     poProcessed: { current: 142, target: 120, unit: '' }
@@ -67,16 +67,16 @@ export const kpiTargets = {
     production: { current: 5100, target: 4400, unit: 'units' },
     defectRate: { current: 1.2, target: 2.0, unit: '%' },
     efficiency: { current: 94.8, target: 90, unit: '%' },
-    costPerUnit: { current: 24.5, target: 25, unit: '$' }
+    costPerUnit: { current: 24.5, target: 25, unit: '₹' }
   },
   inventory: {
     accuracy: { current: 99.1, target: 98, unit: '%' },
     turnoverRate: { current: 6.8, target: 6, unit: 'x' },
-    stockValue: { current: 649000, target: 600000, unit: '$' },
+    stockValue: { current: 649000, target: 600000, unit: '₹' },
     criticalItems: { current: 3, target: 5, unit: '' }
   },
   business_owner: {
-    netProfit: { current: 245000, target: 200000, unit: '$' },
+    netProfit: { current: 245000, target: 200000, unit: '₹' },
     roi: { current: 34.5, target: 30, unit: '%' },
     operationalEfficiency: { current: 92.3, target: 85, unit: '%' },
     customerSatisfaction: { current: 4.7, target: 4.5, unit: '/5' }

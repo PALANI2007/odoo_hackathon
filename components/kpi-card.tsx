@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { formatCurrency } from '@/lib/utils'
 
 interface KPI {
   name: string
@@ -68,10 +69,14 @@ export default function KPICard({ kpi, index }: KPICardProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 + 0.2 }}
           >
-            {kpi.current.toLocaleString()}{kpi.unit}
+            {kpi.unit === '$' || kpi.unit === '₹'
+              ? formatCurrency(kpi.current)
+              : `${kpi.current.toLocaleString()}${kpi.unit}`}
           </motion.div>
           <p className="text-xs text-muted-foreground mt-1">
-            Target: {kpi.target.toLocaleString()}{kpi.unit}
+            Target: {kpi.unit === '$' || kpi.unit === '₹'
+              ? formatCurrency(kpi.target)
+              : `${kpi.target.toLocaleString()}${kpi.unit}`}
           </p>
         </div>
 
@@ -93,7 +98,10 @@ export default function KPICard({ kpi, index }: KPICardProps) {
             <span className={`text-xs font-semibold ${
               isExceeding ? 'text-green-400' : 'text-amber-400'
             }`}>
-              {isExceeding ? '+' : ''}{difference.toLocaleString()}{kpi.unit}
+              {isExceeding ? '+' : ''}
+              {kpi.unit === '$' || kpi.unit === '₹'
+                ? formatCurrency(difference)
+                : `${difference.toLocaleString()}${kpi.unit}`}
             </span>
             <span className="text-xs text-muted-foreground">
               {Math.round(percentage)}%

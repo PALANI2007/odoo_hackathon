@@ -11,7 +11,7 @@ import {
   Activity, 
   Settings, 
   Archive, 
-  DollarSign,
+  IndianRupee,
   AlertTriangle,
   Sparkles,
   ChevronRight,
@@ -230,9 +230,7 @@ export const IsometricFactory: React.FC = () => {
   }, []);
 
   const formatRevenue = (val: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    return new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 0
     }).format(val);
   };
@@ -418,7 +416,7 @@ export const IsometricFactory: React.FC = () => {
             name="Purchase"
             x={590}
             y={280}
-            icon={<DollarSign className="text-emerald-400" />}
+            icon={<IndianRupee className="text-emerald-400" />}
             active={hoveredModule === "purchase"}
             onHover={setHoveredModule}
             status="Awaiting PO"
@@ -462,8 +460,8 @@ export const IsometricFactory: React.FC = () => {
           </div>
 
           <div className="text-2xl font-black text-white tracking-tight mt-2 flex items-center font-display">
-            <DollarSign className="text-cyan-400 w-5 h-5 mr-0.5" />
-            {formatRevenue(revenue).replace("$", "")}
+            <IndianRupee className="text-cyan-400 w-5 h-5 mr-0.5" />
+            {formatRevenue(revenue)}
           </div>
 
           <div className="flex items-center gap-1.5 mt-2.5">

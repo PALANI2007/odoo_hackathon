@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import KPICard from '@/components/kpi-card'
 import SalesChart from '@/components/charts/sales-chart'
+import { formatCurrency } from '@/lib/utils'
 import { kpiTargets, recentOrders } from '@/lib/mock-data'
 
 export default function SalesDashboard() {
@@ -58,7 +59,7 @@ export default function SalesDashboard() {
                   <p className="text-xs text-muted-foreground">{order.id}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-primary">${order.amount.toLocaleString()}</p>
+                  <p className="text-sm font-bold text-primary">{formatCurrency(order.amount)}</p>
                   <p className="text-xs text-muted-foreground capitalize">{order.status}</p>
                 </div>
               </div>
